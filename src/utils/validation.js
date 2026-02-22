@@ -2,9 +2,6 @@ export const LEVELS = ['Junior', 'Mid', 'Senior', 'Lead', 'Manager'];
 export const CURRENCIES = ['AMD', 'USD', 'EUR'];
 export const PERIODS = ['Monthly', 'Yearly'];
 export const NET_GROSS = ['Net', 'Gross'];
-export const CONTRACT_TYPES = ['Employee', 'Contractor'];
-export const LOCATIONS = ['Yerevan', 'Gyumri', 'Vanadzor', 'Remote', 'Other'];
-
 const COMMON_TAGS = ['Linux', 'Git', 'Docker', 'Jira', 'CI/CD'];
 
 export const ROLE_TECH_TAGS = {
@@ -182,12 +179,6 @@ export function validateForm(data, t) {
   if (!data.currency) errors.currency = t('validation.currencyRequired');
   if (!data.period) errors.period = t('validation.periodRequired');
   if (!data.netOrGross) errors.netOrGross = t('validation.netOrGrossRequired');
-
-  if (!data.location) {
-    errors.location = t('validation.locationRequired');
-  } else if (data.location === 'Other' && !data.customLocation?.trim()) {
-    errors.customLocation = t('validation.specifyLocation');
-  }
 
   const company = data.companyName === 'Other' ? data.customCompany?.trim() : data.companyName;
   if (!company) {

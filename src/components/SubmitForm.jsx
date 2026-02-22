@@ -3,20 +3,19 @@ import { RevealOnScroll } from '../hooks/useInView';
 import { useLanguage } from '../hooks/useLanguage';
 import { generateUUID } from '../utils/uuid';
 import {
-  LEVELS, CURRENCIES, PERIODS, NET_GROSS, CONTRACT_TYPES, LOCATIONS,
+  LEVELS, CURRENCIES, PERIODS, NET_GROSS,
   DEFAULT_ROLES, DEFAULT_COMPANIES,
   getTagsForRole, validateForm,
 } from '../utils/validation';
 import {
   submitSalary, getCooldownRemaining, setCooldownTimestamp,
-  getQueue, retryQueue, exportQueueAsJSON, clearQueue,
   fetchCompanies, fetchRoles, createOrUpdateCompany, createOrUpdateRole,
 } from '../utils/submission';
 
 const INITIAL = {
   role: '', customRole: '', level: '', experienceYears: '', salaryAmount: '',
-  currency: 'AMD', period: 'Monthly', netOrGross: 'Net', location: '', customLocation: '',
-  contractType: '', companyName: '', customCompany: '', techTags: [],
+  currency: 'AMD', period: 'Monthly', netOrGross: 'Net',
+  companyName: '', customCompany: '', techTags: [],
 };
 
 function Select({ label, id, value, onChange, options, error, required, selectText }) {
@@ -292,131 +291,229 @@ function CompanyCombobox({ value, onChange, customValue, onCustomChange, label, 
   );
 }
 
-function SuccessPanel({ token, onReset, wasOffline }) {
+function SuccessPanel({ token, onReset, submissionNumber }) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
-  const copy = async () => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const handleEsc = (e) => { if (e.key === 'Escape') onReset(); };
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, [onReset]);
+
+  const clipboardCopy = async (text) => {
     try {
-      await navigator.clipboard.writeText(token);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(text);
     } catch {
       const ta = document.createElement('textarea');
-      ta.value = token;
+      ta.value = text;
       document.body.appendChild(ta);
       ta.select();
       document.execCommand('copy');
       document.body.removeChild(ta);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     }
   };
 
-  return (
-    <div className="text-center py-12 px-6 animate-scale-in">
-      <div className="w-20 h-20 bg-green-100 dark:bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-subtle">
-        <svg className="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+  const copyToken = async () => {
+    await clipboardCopy(token);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const siteUrl = 'https://devcareer.am';
+  const shareText = t('success.shareText');
+
+  const copyLink = async () => {
+    await clipboardCopy(siteUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2500);
+  };
+
+  const confettiPieces = useMemo(() => {
+    const colors = ['#3366ff', '#5990ff', '#FF6B6B', '#FFE66D', '#4ECDC4', '#FF8A5C', '#A78BFA', '#34D399', '#F472B6', '#FBBF24'];
+    return Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      style: {
+        left: `${Math.random() * 100}%`,
+        width: `${6 + Math.random() * 8}px`,
+        height: `${6 + Math.random() * 8}px`,
+        backgroundColor: colors[i % colors.length],
+        borderRadius: Math.random() > 0.5 ? '50%' : '3px',
+        animationDelay: `${Math.random() * 2.5}s`,
+        animationDuration: `${2.5 + Math.random() * 2.5}s`,
+      },
+    }));
+  }, []);
+
+  const platforms = [
+    {
+      name: 'Facebook',
+      bg: 'bg-[#1877F2] hover:bg-[#1469D8]',
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`,
+      icon: (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      ),
+    },
+    {
+      name: 'Messenger',
+      bg: 'bg-gradient-to-br from-[#00B2FF] to-[#006AFF]',
+      href: `fb-messenger://share/?link=${encodeURIComponent(siteUrl)}`,
+      icon: (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.908 1.434 5.503 3.678 7.2V22l3.378-1.856A10.55 10.55 0 0 0 12 20.486c5.523 0 10-4.145 10-9.243S17.523 2 12 2zm1.06 12.453l-2.545-2.714-4.97 2.714 5.467-5.8 2.609 2.714 4.906-2.714-5.467 5.8z"/>
+        </svg>
+      ),
+    },
+    {
+      name: 'Telegram',
+      bg: 'bg-[#26A5E4] hover:bg-[#1E96D1]',
+      href: `https://t.me/share/url?url=${encodeURIComponent(siteUrl)}&text=${encodeURIComponent(shareText)}`,
+      icon: (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+        </svg>
+      ),
+    },
+    {
+      name: 'WhatsApp',
+      bg: 'bg-[#25D366] hover:bg-[#1DA851]',
+      href: `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + siteUrl)}`,
+      icon: (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+      ),
+    },
+    {
+      name: 'Instagram',
+      bg: 'bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#515BD4]',
+      href: '#',
+      onClick: (e) => { e.preventDefault(); copyLink(); },
+      icon: linkCopied ? (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
-      </div>
-
-      <h3 className="text-3xl font-black text-gray-900 dark:text-white">{t('success.thankYou')}</h3>
-      <p className="mt-3 text-gray-500 dark:text-gray-400 text-lg">
-        {wasOffline ? t('success.savedLocally') : t('success.submitted')}
-      </p>
-
-      <div className="mt-8 glass rounded-2xl p-6 max-w-md mx-auto">
-        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{t('success.claimToken')}</p>
-        <div className="flex items-center gap-2">
-          <code className="flex-1 text-sm bg-gray-100 dark:bg-brand-900/50 border border-gray-300 dark:border-brand-700/50 rounded-xl px-4 py-3 font-mono break-all text-brand-700 dark:text-brand-300">
-            {token}
-          </code>
-          <button
-            onClick={copy}
-            className="flex-shrink-0 px-4 py-3 text-sm font-semibold bg-brand-500 text-white rounded-xl hover:bg-brand-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500 hover:shadow-lg hover:shadow-brand-500/25"
-          >
-            {copied ? t('success.copied') : t('success.copy')}
-          </button>
-        </div>
-        <p className="mt-4 text-xs text-gray-400 dark:text-gray-500">
-          {t('success.saveToken')}
-        </p>
-      </div>
-
-      <button
-        onClick={onReset}
-        className="mt-10 text-sm text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 font-medium transition-colors duration-200 flex items-center gap-1 mx-auto"
-      >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+      ) : (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
         </svg>
-        {t('success.submitAnother')}
-      </button>
-    </div>
-  );
-}
-
-function QueuePanel() {
-  const { t } = useLanguage();
-  const [queue, setQueue] = useState(getQueue);
-  const [retrying, setRetrying] = useState(false);
-  const [result, setResult] = useState(null);
-  const [open, setOpen] = useState(false);
-
-  const refresh = () => setQueue(getQueue());
-
-  if (queue.length === 0) return null;
+      ),
+    },
+  ];
 
   return (
-    <div className="mt-8 border border-amber-400/30 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 rounded-2xl p-5">
-      <button
-        onClick={() => { setOpen((v) => !v); refresh(); }}
-        className="flex items-center gap-2 text-sm font-medium text-amber-700 dark:text-amber-300 w-full"
-      >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        {t('queue.queued', { count: queue.length })}
-        <svg className={`w-4 h-4 ml-auto transition-transform duration-300 ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={onReset} />
 
-      {open && (
-        <div className="mt-4 flex flex-wrap gap-3 animate-slide-up">
-          <button
-            disabled={retrying}
-            onClick={async () => {
-              setRetrying(true);
-              const r = await retryQueue();
-              setResult(r);
-              refresh();
-              setRetrying(false);
-            }}
-            className="px-4 py-2.5 text-sm font-medium bg-amber-500 text-white rounded-xl hover:bg-amber-400 disabled:opacity-50 transition-all duration-200"
-          >
-            {retrying ? t('queue.retrying') : t('queue.retry')}
-          </button>
-          <button
-            onClick={exportQueueAsJSON}
-            className="px-4 py-2.5 text-sm font-medium glass text-amber-700 dark:text-amber-300 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-200"
-          >
-            {t('queue.exportJSON')}
-          </button>
-          <button
-            onClick={() => { clearQueue(); refresh(); }}
-            className="px-4 py-2.5 text-sm text-red-500 dark:text-red-400 hover:text-red-400 dark:hover:text-red-300 transition-colors"
-          >
-            {t('queue.clearQueue')}
-          </button>
-          {result && (
-            <p className="w-full text-xs text-amber-600 dark:text-amber-400 mt-2">
-              {t('queue.sent', { sent: result.sent, failed: result.failed })}
-            </p>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {confettiPieces.map((p) => (
+          <div key={p.id} className="confetti-piece" style={p.style} />
+        ))}
+      </div>
+
+      <div className="relative w-full max-w-md bg-white dark:bg-brand-900 rounded-3xl shadow-2xl shadow-black/25 overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto">
+        <div className="h-1.5" style={{ background: 'linear-gradient(90deg, #4ade80, #3366ff, #4ade80)', backgroundSize: '300% 100%', animation: 'shimmer 2.5s linear infinite' }} />
+
+        <div className="p-6 sm:p-8">
+          <div className="relative w-20 h-20 mx-auto mb-5">
+            <div className="absolute inset-0 bg-green-400/20 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
+            <div className="relative w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" style={{ strokeDasharray: 24, strokeDashoffset: 24, animation: 'checkDraw 0.5s ease-out 0.3s forwards' }} />
+              </svg>
+            </div>
+          </div>
+
+          <h3 className="text-2xl sm:text-3xl font-black text-center text-gray-900 dark:text-white">
+            {t('success.thankYou')}
+          </h3>
+          <p className="mt-2 text-center text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+            {t('success.submitted')}
+          </p>
+
+          {submissionNumber && (
+            <div className="mt-4 flex justify-center">
+              <div className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-brand-50 to-blue-50 dark:from-brand-800/30 dark:to-blue-900/20 border border-brand-200/60 dark:border-brand-700/40 rounded-2xl">
+                <span className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-brand-600 to-brand-500 bg-clip-text text-transparent dark:from-brand-300 dark:to-brand-400">
+                  #{submissionNumber}
+                </span>
+                <div className="w-px h-6 bg-brand-200 dark:bg-brand-700/50" />
+                <span className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300">
+                  {t('success.contributorNumber', { number: submissionNumber })}
+                </span>
+              </div>
+            </div>
           )}
+
+          <div className="mt-5 bg-gray-50 dark:bg-brand-950/50 rounded-2xl p-4 sm:p-5 border border-gray-100 dark:border-brand-800/50">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('success.claimToken')}</p>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 text-xs sm:text-sm bg-white dark:bg-brand-900 border border-gray-200 dark:border-brand-700/50 rounded-xl px-3 py-2.5 font-mono break-all text-brand-600 dark:text-brand-300">
+                {token}
+              </code>
+              <button
+                onClick={copyToken}
+                className={`flex-shrink-0 px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                  copied
+                    ? 'bg-green-500 text-white'
+                    : 'bg-brand-500 text-white hover:bg-brand-400 hover:shadow-lg hover:shadow-brand-500/25'
+                }`}
+              >
+                {copied ? t('success.copied') : t('success.copy')}
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex-1 h-px bg-gray-200 dark:bg-brand-800/50" />
+              <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                {t('success.shareTitle')}
+              </span>
+              <div className="flex-1 h-px bg-gray-200 dark:bg-brand-800/50" />
+            </div>
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+              {t('success.shareCTA')}
+            </p>
+            <div className="flex justify-center gap-2 sm:gap-3">
+              {platforms.map((p) => (
+                <div key={p.name} className="relative group">
+                  <a
+                    href={p.href}
+                    target={p.onClick ? undefined : '_blank'}
+                    rel={p.onClick ? undefined : 'noopener noreferrer'}
+                    onClick={p.onClick}
+                    title={p.name}
+                    className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-white transition-all duration-200 hover:scale-110 hover:shadow-lg ${p.bg}`}
+                  >
+                    {p.icon}
+                  </a>
+                  <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] text-gray-400 dark:text-gray-500 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    {p.name === 'Instagram' && linkCopied ? t('success.linkCopied') : p.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={onReset}
+            className="mt-10 w-full py-3 text-sm font-semibold text-brand-600 dark:text-brand-400 border-2 border-brand-200 dark:border-brand-700/50 rounded-2xl hover:bg-brand-50 dark:hover:bg-brand-800/30 transition-all duration-200 flex items-center justify-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            {t('success.submitAnother')}
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -505,7 +602,6 @@ export default function SubmitForm() {
 
     const resolvedCompany = form.companyName === 'Other' ? form.customCompany.trim() : form.companyName;
     const resolvedRole = form.role === 'Other' ? form.customRole.trim() : form.role;
-    const resolvedLocation = form.location === 'Other' ? form.customLocation.trim() : form.location;
 
     const payload = {
       role: resolvedRole,
@@ -515,10 +611,8 @@ export default function SubmitForm() {
       currency: form.currency,
       period: form.period,
       netOrGross: form.netOrGross,
-      location: resolvedLocation,
       companyName: resolvedCompany,
       claimToken,
-      ...(form.contractType && { contractType: form.contractType }),
       ...(form.techTags.length > 0 && { techTags: form.techTags }),
     };
 
@@ -540,7 +634,7 @@ export default function SubmitForm() {
     setCooldown(getCooldownRemaining());
     setSubmitting(false);
 
-    setSuccess({ token: claimToken, offline: !result.ok });
+    setSuccess({ token: claimToken, submissionNumber: result.id || null });
   };
 
   const reset = () => {
@@ -563,7 +657,7 @@ export default function SubmitForm() {
             <span className="inline-block px-4 py-1.5 text-xs font-semibold text-brand-600 dark:text-brand-300 bg-brand-100 dark:bg-brand-800/50 rounded-full mb-4 tracking-wider uppercase">
               {t('form.badge')}
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-black text-gray-900 dark:text-white">
               {t('form.title')}
             </h2>
             <p className="mt-4 text-gray-500 dark:text-gray-400 max-w-lg mx-auto">
@@ -575,7 +669,7 @@ export default function SubmitForm() {
         <RevealOnScroll>
           <div className="glass rounded-3xl p-6 sm:p-10">
             {success ? (
-              <SuccessPanel token={success.token} onReset={reset} wasOffline={success.offline} />
+              <SuccessPanel token={success.token} onReset={reset} submissionNumber={success.submissionNumber} />
             ) : (
               <form onSubmit={handleSubmit} noValidate>
                 <div aria-hidden="true" className="absolute opacity-0 h-0 overflow-hidden" style={{ position: 'absolute', left: '-9999px' }}>
@@ -651,23 +745,6 @@ export default function SubmitForm() {
                     <Select label={t('form.netOrGross')} id="netOrGross" value={form.netOrGross} onChange={set('netOrGross')} options={NET_GROSS} error={errors.netOrGross} required selectText={t('form.select')} />
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <Select label={t('form.location')} id="location" value={form.location} onChange={set('location')} options={LOCATIONS} error={errors.location || errors.customLocation} required selectText={t('form.select')} />
-                    <Select label={t('form.contractType')} id="contractType" value={form.contractType} onChange={set('contractType')} options={CONTRACT_TYPES} error={errors.contractType} selectText={t('form.select')} />
-                  </div>
-
-                  {form.location === 'Other' && (
-                    <Input
-                      label={t('form.yourLocation')}
-                      id="customLocation"
-                      value={form.customLocation}
-                      onChange={set('customLocation')}
-                      error={errors.customLocation}
-                      required
-                      placeholder={t('form.placeholderLocation')}
-                    />
-                  )}
-
                   <TagSelector tags={getTagsForRole(form.role)} selected={form.techTags} onToggle={toggleTag} />
 
                   {cooldown > 0 && (
@@ -707,7 +784,6 @@ export default function SubmitForm() {
           </div>
         </RevealOnScroll>
 
-        <QueuePanel />
       </div>
     </section>
   );

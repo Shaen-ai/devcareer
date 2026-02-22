@@ -1,4 +1,3 @@
-const QUEUE_KEY = 'devcareer_submissions_queue';
 const COOLDOWN_KEY = 'devcareer_last_submit';
 const COOLDOWN_MS = 30_000; // 30 seconds between submissions
 
@@ -59,73 +58,15 @@ export function setCooldownTimestamp() {
   localStorage.setItem(COOLDOWN_KEY, String(Date.now()));
 }
 
-export function getQueue() {
-  try {
-    return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]');
-  } catch {
-    return [];
-  }
-}
-
-function saveToQueue(payload) {
-  const queue = getQueue();
-  queue.push({ ...payload, queuedAt: new Date().toISOString() });
-  localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
-}
-
-export function exportQueueAsJSON() {
-  const queue = getQueue();
-  const blob = new Blob([JSON.stringify(queue, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `devcareer_submissions_${Date.now()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-export function clearQueue() {
-  localStorage.removeItem(QUEUE_KEY);
-}
-
 export async function submitSalary(payload) {
   const url = getSubmitUrl();
 
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return { ok: true };
-  } catch {
-    saveToQueue(payload);
-    return { ok: false, offline: true };
-  }
-}
-
-export async function retryQueue() {
-  const url = getSubmitUrl();
-
-  const queue = getQueue();
-  const failed = [];
-  let sent = 0;
-
-  for (const item of queue) {
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item),
-      });
-      if (!res.ok) throw new Error();
-      sent++;
-    } catch {
-      failed.push(item);
-    }
-  }
-
-  localStorage.setItem(QUEUE_KEY, JSON.stringify(failed));
-  return { sent, failed: failed.length };
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  return { ok: true, id: data.id };
 }

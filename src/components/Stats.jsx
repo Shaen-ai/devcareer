@@ -34,29 +34,12 @@ export default function Stats() {
             <span className="inline-block px-4 py-1.5 text-xs font-semibold text-brand-600 dark:text-brand-300 bg-brand-100 dark:bg-brand-800/50 rounded-full mb-4 tracking-wider uppercase">
               {t('stats.badge')}
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-black text-gray-900 dark:text-white">
               {t('stats.title')}
             </h2>
-            <p className="mt-4 text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-lg">
+            <p className="mt-4 text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-base sm:text-lg">
               {t('stats.description')}
             </p>
-          </div>
-        </RevealOnScroll>
-
-        <RevealOnScroll>
-          <div className="glass rounded-2xl p-8 mb-12">
-            <div className="flex items-center justify-between text-sm mb-3">
-              <span className="text-brand-600 dark:text-brand-300 font-medium">{t('stats.dataCollection')}</span>
-              <span className="text-gray-900 dark:text-white font-bold">{t('stats.stageOf')}</span>
-            </div>
-            <div className="w-full h-3 bg-gray-200 dark:bg-brand-900 rounded-full overflow-hidden">
-              <div className="progress-bar h-full rounded-full" style={{ width: '15%' }} />
-            </div>
-            <div className="flex justify-between mt-3 text-xs text-gray-400 dark:text-gray-500">
-              <span>{t('stats.collecting')}</span>
-              <span>{t('stats.analyzing')}</span>
-              <span>{t('stats.publishing')}</span>
-            </div>
           </div>
         </RevealOnScroll>
 

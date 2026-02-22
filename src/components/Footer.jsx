@@ -22,7 +22,7 @@ export default function Footer() {
               {t('footer.description')}
             </p>
 
-            <div className="mt-6 flex gap-4">
+            <div className="mt-6 flex flex-wrap gap-3 sm:gap-4">
               <a
                 href="#submit"
                 className="px-5 py-2.5 text-sm font-semibold bg-brand-500 text-white rounded-xl hover:bg-brand-400 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/25"
@@ -67,7 +67,7 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-brand-800/30">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
             <p className="text-gray-400 dark:text-gray-500">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
-            <div className="flex gap-8">
+            <div className="flex flex-wrap gap-4 sm:gap-8 justify-center sm:justify-end">
               <a href="#privacy" className="text-gray-400 dark:text-gray-500 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">{t('footer.privacy')}</a>
               <a href="#faq" className="text-gray-400 dark:text-gray-500 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">{t('footer.faq')}</a>
               <a href="#submit" className="text-gray-400 dark:text-gray-500 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200">{t('footer.submit')}</a>

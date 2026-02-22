@@ -1,11 +1,11 @@
-import { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import en from '../i18n/en';
 import hy from '../i18n/hy';
 import ru from '../i18n/ru';
 
 const TRANSLATIONS = { en, hy, ru };
 const SUPPORTED_LANGS = ['en', 'hy', 'ru'];
-const DEFAULT_LANG = 'en';
+const DEFAULT_LANG = 'hy';
 
 const LanguageContext = createContext();
 
@@ -21,6 +21,10 @@ function get(obj, path) {
 
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(getInitialLang);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   const changeLang = useCallback((code) => {
     if (SUPPORTED_LANGS.includes(code)) {

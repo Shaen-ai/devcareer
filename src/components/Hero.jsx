@@ -78,20 +78,20 @@ export default function Hero() {
           </div>
         </div>
 
-        <h1 className={`text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] text-gray-900 dark:text-white transition-all duration-1000 delay-150 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <h1 className={`text-[1.75rem] min-[400px]:text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-[1.1] text-gray-900 dark:text-white transition-all duration-1000 delay-150 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {t('hero.title1')}
           <br />
           <span className="gradient-text">{t('hero.title2')}</span>
         </h1>
 
-        <p className={`mt-8 text-lg sm:text-xl text-gray-600 dark:text-brand-200/80 max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-300 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <p className={`mt-6 sm:mt-8 text-base sm:text-xl text-gray-600 dark:text-brand-200/80 max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-300 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {t('hero.description')}
         </p>
 
         <div className={`mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-1000 delay-500 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <a
             href="#submit"
-            className="group relative inline-flex items-center gap-3 bg-brand-600 dark:bg-white text-white dark:text-brand-900 font-bold text-lg px-8 py-4 rounded-2xl shadow-2xl shadow-brand-500/20 hover:shadow-brand-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-brand-500/30 dark:focus:ring-white/30"
+            className="group relative inline-flex items-center gap-3 bg-brand-600 dark:bg-white text-white dark:text-brand-900 font-bold text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl shadow-2xl shadow-brand-500/20 hover:shadow-brand-500/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-brand-500/30 dark:focus:ring-white/30"
           >
             {t('hero.cta')}
             <svg className="w-5 h-5 group-hover:translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -109,9 +109,9 @@ export default function Hero() {
           </a>
         </div>
 
-        <div className={`mt-16 flex items-center justify-center gap-8 sm:gap-12 transition-all duration-1000 delay-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`mt-12 sm:mt-16 flex items-center justify-center gap-6 sm:gap-12 transition-all duration-1000 delay-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="text-center">
-            <div className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white">
+            <div className="text-2xl sm:text-4xl font-black text-gray-900 dark:text-white">
               <AnimatedCounter end={30} />
               <span className="text-brand-500 dark:text-brand-400"> {t('hero.sec')}</span>
             </div>
@@ -119,7 +119,7 @@ export default function Hero() {
           </div>
           <div className="w-px h-10 bg-gray-300 dark:bg-brand-700" />
           <div className="text-center">
-            <div className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white">
+            <div className="text-2xl sm:text-4xl font-black text-gray-900 dark:text-white">
               <AnimatedCounter end={100} /><span className="text-brand-500 dark:text-brand-400">%</span>
             </div>
             <p className="text-xs text-gray-500 dark:text-brand-300 mt-1">{t('hero.anonymous')}</p>

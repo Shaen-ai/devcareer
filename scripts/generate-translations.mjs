@@ -141,18 +141,10 @@ const en = {
   success: {
     thankYou: 'Thank you!',
     submitted: 'Your anonymous salary data has been submitted.',
-    savedLocally: 'Saved locally — will retry when online.',
     claimToken: 'Your claim token:',
     copy: 'Copy',
     copied: 'Copied!',
-    saveToken: 'Save this token to claim your submission later when accounts launch.',
     submitAnother: 'Submit another salary',
-  },
-  queue: {
-    retry: 'Retry sending',
-    retrying: 'Retrying...',
-    exportJSON: 'Export JSON',
-    clearQueue: 'Clear queue',
   },
   faq: {
     badge: 'Questions',

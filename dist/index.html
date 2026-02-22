@@ -1,27 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hy">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary SEO -->
-  <title>DevCareer.am — Real IT Salaries in Armenia (Anonymous)</title>
-  <meta name="description" content="Submit your IT salary anonymously and help build Armenia's first transparent salary database. No names, no emails — just real data for the tech community." />
+  <title>DevCareer.am — Real IT Salaries in Armenia | Anonymous & Transparent</title>
+  <meta name="description" content="Help create Armenia's first transparent IT salary database. Completely anonymous — no names, no emails. Just honest data for confident negotiations. Submit in 30 seconds." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://devcareer.am/" />
+  <meta name="theme-color" content="#3366ff" />
 
-  <!-- Open Graph -->
+  <!-- Open Graph (Facebook, Messenger, Instagram, WhatsApp, Telegram) -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://devcareer.am/" />
-  <meta property="og:title" content="DevCareer.am — Real IT Salaries in Armenia (Anonymous)" />
-  <meta property="og:description" content="Submit your IT salary anonymously. Help build Armenia's first transparent salary database for the tech community." />
+  <meta property="og:title" content="Real IT Salaries in Armenia — Know Your Worth" />
+  <meta property="og:description" content="Help create the first transparent salary database for Armenia's tech community. 100% anonymous — no names, no emails. Submit in 30 seconds." />
   <meta property="og:site_name" content="DevCareer.am" />
-  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale" content="hy_AM" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="ru_RU" />
+  <meta property="og:image" content="https://devcareer.am/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="DevCareer.am — Real IT Salaries in Armenia" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="DevCareer.am — Real IT Salaries in Armenia" />
-  <meta name="twitter:description" content="Submit your IT salary anonymously. Help build Armenia's first transparent salary database for the tech community." />
+  <meta name="twitter:title" content="Real IT Salaries in Armenia — Know Your Worth" />
+  <meta name="twitter:description" content="Help create the first transparent salary database for Armenia's tech community. 100% anonymous — no names, no emails. Submit in 30 seconds." />
+  <meta name="twitter:image" content="https://devcareer.am/og-image.png" />
 
   <!-- JSON-LD: Organization -->
   <script type="application/ld+json">
@@ -157,6 +165,11 @@
   <style>
     html, body { overflow-x: hidden; }
     html { scroll-behavior: smooth; }
+    h1, h2, h3, p, a, button, span, label { overflow-wrap: break-word; word-wrap: break-word; }
+
+    @media (max-width: 639px) {
+      h1 { hyphens: auto; -webkit-hyphens: auto; }
+    }
 
     .reveal {
       opacity: 0;
@@ -259,6 +272,42 @@
       pointer-events: none;
     }
 
+    .confetti-piece {
+      position: absolute;
+      top: -10px;
+      animation-name: confettiFall;
+      animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      animation-fill-mode: forwards;
+      will-change: transform, opacity;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-10px) translateX(0) rotateZ(0deg);
+        opacity: 1;
+      }
+      25% {
+        transform: translateY(25vh) translateX(15px) rotateZ(180deg);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(50vh) translateX(-10px) rotateZ(360deg);
+        opacity: 1;
+      }
+      75% {
+        transform: translateY(75vh) translateX(20px) rotateZ(540deg);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(105vh) translateX(-5px) rotateZ(720deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes checkDraw {
+      to { stroke-dashoffset: 0; }
+    }
+
     /* Dark nav scrolled */
     .dark .nav-scrolled {
       background: rgba(13, 26, 92, 0.9);
@@ -290,7 +339,7 @@
     html:not(.dark) ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
     html:not(.dark) ::-webkit-scrollbar-thumb:hover { background: #64748b; }
   </style>
-  <script type="module" crossorigin src="/assets/index-DAB8La5a.js"></script>
+  <script type="module" crossorigin src="/assets/index-omONNAUP.js"></script>
 </head>
 <body class="bg-gray-50 dark:bg-brand-950 text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
   <div id="root"></div>

@@ -51,10 +51,10 @@ export default function HowItWorks() {
             <span className="inline-block px-4 py-1.5 text-xs font-semibold text-brand-600 dark:text-brand-300 bg-brand-100 dark:bg-brand-800/50 rounded-full mb-4 tracking-wider uppercase">
               {t('howItWorks.badge')}
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-black text-gray-900 dark:text-white">
               {t('howItWorks.title')}
             </h2>
-            <p className="mt-4 text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-lg">
+            <p className="mt-4 text-gray-500 dark:text-gray-400 max-w-xl mx-auto text-base sm:text-lg">
               {t('howItWorks.description')}
             </p>
           </div>

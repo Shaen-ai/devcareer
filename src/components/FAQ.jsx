@@ -2,8 +2,26 @@ import { useState } from 'react';
 import { RevealOnScroll } from '../hooks/useInView';
 import { useLanguage } from '../hooks/useLanguage';
 
-function Item({ q, a, index }) {
+function Item({ q, a, linkText, index }) {
   const [open, setOpen] = useState(false);
+
+  const renderAnswer = () => {
+    if (linkText) {
+      const idx = a.indexOf(linkText);
+      if (idx !== -1) {
+        return (
+          <>
+            {a.substring(0, idx)}
+            <a href="mailto:devcareeram@gmail.com" className="text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 font-medium transition-colors">
+              {linkText}
+            </a>
+            {a.substring(idx + linkText.length)}
+          </>
+        );
+      }
+    }
+    return a;
+  };
 
   return (
     <RevealOnScroll delay={Math.min(index + 1, 4)}>
@@ -13,7 +31,7 @@ function Item({ q, a, index }) {
           className="w-full flex items-center justify-between p-6 text-left gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-2xl"
           aria-expanded={open}
         >
-          <span className="font-bold text-gray-900 dark:text-white text-lg">{q}</span>
+          <span className="font-bold text-gray-900 dark:text-white text-base sm:text-lg">{q}</span>
           <div className={`flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-300 ${open ? 'bg-brand-500 rotate-180' : 'bg-brand-100 dark:bg-brand-800/50'}`}>
             <svg
               className={`w-4 h-4 ${open ? 'text-white' : 'text-brand-600 dark:text-white'}`}
@@ -27,7 +45,7 @@ function Item({ q, a, index }) {
           className={`overflow-hidden transition-all duration-500 ease-out ${open ? 'max-h-96' : 'max-h-0'}`}
           role="region"
         >
-          <p className="px-6 pb-6 text-gray-500 dark:text-gray-400 leading-relaxed">{a}</p>
+          <p className="px-6 pb-6 text-gray-500 dark:text-gray-400 leading-relaxed">{renderAnswer()}</p>
         </div>
       </div>
     </RevealOnScroll>
@@ -42,6 +60,8 @@ export default function FAQ() {
     { q: t('faq.q2'), a: t('faq.a2') },
     { q: t('faq.q3'), a: t('faq.a3') },
     { q: t('faq.q4'), a: t('faq.a4') },
+    { q: t('faq.q5'), a: t('faq.a5') },
+    { q: t('faq.q6'), a: t('faq.a6'), linkText: t('faq.a6Link') },
   ];
 
   return (
@@ -55,7 +75,7 @@ export default function FAQ() {
             <span className="inline-block px-4 py-1.5 text-xs font-semibold text-brand-600 dark:text-brand-300 bg-brand-100 dark:bg-brand-800/50 rounded-full mb-4 tracking-wider uppercase">
               {t('faq.badge')}
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white">
+            <h2 className="text-3xl sm:text-5xl font-black text-gray-900 dark:text-white">
               {t('faq.title')}
             </h2>
           </div>
@@ -71,7 +91,7 @@ export default function FAQ() {
           <div className="mt-10 text-center">
             <p className="text-gray-500 dark:text-gray-400">
               {t('faq.moreQuestions')}{' '}
-              <a href="mailto:hello@devcareer.am" className="text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 font-medium transition-colors">
+              <a href="mailto:devcareeram@gmail.com" className="text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 font-medium transition-colors">
                 {t('faq.getInTouch')}
               </a>
             </p>
