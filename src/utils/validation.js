@@ -114,6 +114,31 @@ export const ROLE_TECH_TAGS = {
   ],
 };
 
+export const DEFAULT_ROLES = Object.keys(ROLE_TECH_TAGS).slice(0, 10);
+
+export const DEFAULT_COMPANIES = [
+  'EPAM Systems',
+  'Synopsys Armenia',
+  'ServiceTitan',
+  'Picsart',
+  'Digitain',
+  'SoftConstruct',
+  'BetConstruct',
+  'Krisp',
+  'Renderforest',
+  'DataArt',
+  'Menu Group',
+  'SuperAnnotate',
+  'CodeSignal',
+  'Joomag',
+  'PandaDoc',
+  'Adobe',
+  'National Instruments',
+  'TeamViewer',
+  'Aarki',
+  'Simply Technologies',
+];
+
 const ALL_TAGS = [...new Set(Object.values(ROLE_TECH_TAGS).flat())].sort();
 
 export function getTagsForRole(role) {

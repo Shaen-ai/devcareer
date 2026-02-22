@@ -4,6 +4,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { generateUUID } from '../utils/uuid';
 import {
   LEVELS, CURRENCIES, PERIODS, NET_GROSS, CONTRACT_TYPES, LOCATIONS,
+  DEFAULT_ROLES, DEFAULT_COMPANIES,
   getTagsForRole, validateForm,
 } from '../utils/validation';
 import {
@@ -428,15 +429,15 @@ export default function SubmitForm() {
   const [success, setSuccess] = useState(null);
   const [cooldown, setCooldown] = useState(getCooldownRemaining);
   const [honeypot, setHoneypot] = useState('');
-  const [companies, setCompanies] = useState([]);
-  const [roles, setRoles] = useState([]);
+  const [companies, setCompanies] = useState(DEFAULT_COMPANIES);
+  const [roles, setRoles] = useState(DEFAULT_ROLES);
 
   useEffect(() => {
     let ignore = false;
     Promise.all([fetchCompanies(), fetchRoles()]).then(([c, r]) => {
       if (ignore) return;
-      setCompanies(c);
-      setRoles(r);
+      if (c.length) setCompanies((prev) => [...new Set([...prev, ...c])].sort());
+      if (r.length) setRoles((prev) => [...new Set([...prev, ...r])].sort());
     });
     return () => { ignore = true; };
   }, []);
@@ -521,13 +522,17 @@ export default function SubmitForm() {
       ...(form.techTags.length > 0 && { techTags: form.techTags }),
     };
 
-    if (resolvedCompany && !companies.includes(resolvedCompany)) {
-      await createOrUpdateCompany(resolvedCompany);
-      setCompanies((prev) => [...prev, resolvedCompany].sort());
+    if (resolvedCompany) {
+      createOrUpdateCompany(resolvedCompany);
+      if (!companies.includes(resolvedCompany)) {
+        setCompanies((prev) => [...prev, resolvedCompany].sort());
+      }
     }
-    if (resolvedRole && !roles.includes(resolvedRole)) {
-      await createOrUpdateRole(resolvedRole);
-      setRoles((prev) => [...prev, resolvedRole].sort());
+    if (resolvedRole) {
+      createOrUpdateRole(resolvedRole);
+      if (!roles.includes(resolvedRole)) {
+        setRoles((prev) => [...prev, resolvedRole].sort());
+      }
     }
 
     const result = await submitSalary(payload);

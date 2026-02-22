@@ -2,7 +2,7 @@ const QUEUE_KEY = 'devcareer_submissions_queue';
 const COOLDOWN_KEY = 'devcareer_last_submit';
 const COOLDOWN_MS = 30_000; // 30 seconds between submissions
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://api.devcareers.com/v1';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://api.devcareer.am/v1';
 
 function getSubmitUrl() {
   return import.meta.env.VITE_SUBMIT_URL || `${API_BASE}/submit`;
