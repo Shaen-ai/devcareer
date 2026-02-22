@@ -97,7 +97,7 @@ export default {
     "saveToken": "Save this token to claim your submission later when accounts are launched.",
     "submitAnother": "Submit another salary",
     "shareTitle": "Share",
-    "shareText": "I contributed to building Armenia's first transparent IT salary database. Help — submit anonymously at DevCareer.am",
+    "shareText": "Transparency starts with anonymity. I participated. DevCareer.am",
     "linkCopied": "Link copied.",
     "contributorNumber": "You are participant #{number}. Share the site with your friends so the statistics become available faster."
   },

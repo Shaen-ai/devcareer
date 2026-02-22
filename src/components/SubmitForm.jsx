@@ -357,16 +357,6 @@ function SuccessPanel({ onReset, submissionNumber }) {
       ),
     },
     {
-      name: 'Messenger',
-      bg: 'bg-gradient-to-br from-[#00B2FF] to-[#006AFF]',
-      href: `fb-messenger://share/?link=${encodeURIComponent(siteUrl)}`,
-      icon: (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.908 1.434 5.503 3.678 7.2V22l3.378-1.856A10.55 10.55 0 0 0 12 20.486c5.523 0 10-4.145 10-9.243S17.523 2 12 2zm1.06 12.453l-2.545-2.714-4.97 2.714 5.467-5.8 2.609 2.714 4.906-2.714-5.467 5.8z"/>
-        </svg>
-      ),
-    },
-    {
       name: 'Telegram',
       bg: 'bg-[#26A5E4] hover:bg-[#1E96D1]',
       href: `https://t.me/share/url?url=${encodeURIComponent(siteUrl)}&text=${encodeURIComponent(shareText)}`,
@@ -387,8 +377,18 @@ function SuccessPanel({ onReset, submissionNumber }) {
       ),
     },
     {
-      name: 'Instagram',
-      bg: 'bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#515BD4]',
+      name: 'LinkedIn',
+      bg: 'bg-[#0A66C2] hover:bg-[#004182]',
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(siteUrl)}`,
+      icon: (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      ),
+    },
+    {
+      name: 'Copy',
+      bg: 'bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600',
       href: '#',
       onClick: (e) => { e.preventDefault(); copyLink(); },
       icon: linkCopied ? (
@@ -396,8 +396,8 @@ function SuccessPanel({ onReset, submissionNumber }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       ) : (
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
         </svg>
       ),
     },
@@ -455,10 +455,7 @@ function SuccessPanel({ onReset, submissionNumber }) {
               </span>
               <div className="flex-1 h-px bg-gray-200 dark:bg-brand-800/50" />
             </div>
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-4">
-              {t('success.shareCTA')}
-            </p>
-            <div className="flex justify-center gap-2 sm:gap-3">
+            <div className="flex justify-center gap-2 sm:gap-3 mt-4">
               {platforms.map((p) => (
                 <div key={p.name} className="relative group">
                   <a
@@ -472,7 +469,7 @@ function SuccessPanel({ onReset, submissionNumber }) {
                     {p.icon}
                   </a>
                   <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] text-gray-400 dark:text-gray-500 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                    {p.name === 'Instagram' && linkCopied ? t('success.linkCopied') : p.name}
+                    {p.name === 'Copy' && linkCopied ? t('success.linkCopied') : p.name}
                   </span>
                 </div>
               ))}
@@ -481,10 +478,10 @@ function SuccessPanel({ onReset, submissionNumber }) {
 
           <button
             onClick={onReset}
-            className="mt-10 w-full py-3 text-sm font-semibold text-brand-600 dark:text-brand-400 border-2 border-brand-200 dark:border-brand-700/50 rounded-2xl hover:bg-brand-50 dark:hover:bg-brand-800/30 transition-all duration-200 flex items-center justify-center gap-2"
+            className="mt-10 w-full py-3.5 px-5 text-sm font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 dark:from-brand-500 dark:to-brand-700 rounded-2xl shadow-lg shadow-brand-500/25 dark:shadow-brand-500/20 hover:shadow-xl hover:shadow-brand-500/30 hover:from-brand-600 hover:to-brand-700 dark:hover:from-brand-600 dark:hover:to-brand-800 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2.5"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <path d="M12 5v14M5 12h14" />
             </svg>
             {t('success.submitAnother')}
           </button>
@@ -504,18 +501,19 @@ export default function SubmitForm() {
   const [success, setSuccess] = useState(null);
   const [cooldown, setCooldown] = useState(getCooldownRemaining);
   const [honeypot, setHoneypot] = useState('');
-  const [companies, setCompanies] = useState(DEFAULT_COMPANIES);
-  const [roles, setRoles] = useState(DEFAULT_ROLES);
+  const sortAsc = useCallback((a, b) => String(a).localeCompare(String(b), undefined, { sensitivity: 'base' }), []);
+  const [companies, setCompanies] = useState(() => [...DEFAULT_COMPANIES].sort(sortAsc));
+  const [roles, setRoles] = useState(() => [...DEFAULT_ROLES].sort(sortAsc));
 
   useEffect(() => {
     let ignore = false;
     Promise.all([fetchCompanies(), fetchRoles()]).then(([c, r]) => {
       if (ignore) return;
-      if (c.length) setCompanies((prev) => [...new Set([...prev, ...c])].sort());
-      if (r.length) setRoles((prev) => [...new Set([...prev, ...r])].sort());
+      if (c.length) setCompanies((prev) => [...new Set([...prev, ...c])].sort(sortAsc));
+      if (r.length) setRoles((prev) => [...new Set([...prev, ...r])].sort(sortAsc));
     });
     return () => { ignore = true; };
-  }, []);
+  }, [sortAsc]);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -597,13 +595,13 @@ export default function SubmitForm() {
     if (resolvedCompany) {
       createOrUpdateCompany(resolvedCompany);
       if (!companies.includes(resolvedCompany)) {
-        setCompanies((prev) => [...prev, resolvedCompany].sort());
+        setCompanies((prev) => [...prev, resolvedCompany].sort(sortAsc));
       }
     }
     if (resolvedRole) {
       createOrUpdateRole(resolvedRole);
       if (!roles.includes(resolvedRole)) {
-        setRoles((prev) => [...prev, resolvedRole].sort());
+        setRoles((prev) => [...prev, resolvedRole].sort(sortAsc));
       }
     }
 
