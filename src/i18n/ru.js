@@ -80,7 +80,13 @@ export default {
     "placeholderExp": "например 5",
     "placeholderSalary": "например 500000",
     "selected": "{count} выбрано",
-    "cooldown": "Пожалуйста, подождите {seconds}с."
+    "cooldown": "Пожалуйста, подождите {seconds}с.",
+    "options": {
+      "net": "Нетто",
+      "gross": "Брутто",
+      "monthly": "Ежемесячно",
+      "yearly": "Ежегодно"
+    }
   },
   "success": {
     "thankYou": "Спасибо",
@@ -92,7 +98,8 @@ export default {
     "submitAnother": "Отправить другую зарплату",
     "shareTitle": "Поделиться",
     "shareText": "Я внёс вклад в создание первой прозрачной базы ИТ-зарплат Армении. Помогите — отправьте данные анонимно на DevCareer.am",
-    "linkCopied": "Ссылка скопирована."
+    "linkCopied": "Ссылка скопирована.",
+    "contributorNumber": "Вы участник №{number}. Поделитесь сайтом с друзьями, чтобы статистика стала доступна быстрее."
   },
   "faq": {
     "badge": "Вопросы",

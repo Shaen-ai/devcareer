@@ -59,7 +59,7 @@ export default {
     "salary": "Աշխատավարձի չափը",
     "currency": "Արժույթ",
     "period": "Պարբերաշրջան",
-    "netOrGross": "Զուտ / Համախառն",
+    "netOrGross": "Մաքուր / Համախառն",
     "location": "Տեղակայքը",
     "yourLocation": "Ձեր տեղակայքը",
     "placeholderLocation": "օր. Երևան, Գյումրի...",
@@ -80,7 +80,13 @@ export default {
     "placeholderExp": "օր. 5",
     "placeholderSalary": "օր. 500000",
     "selected": "{count} ընտրված",
-    "cooldown": "Խնդրում ենք սպասել {seconds}վ."
+    "cooldown": "Խնդրում ենք սպասել {seconds}վ.",
+    "options": {
+      "net": "Մաքուր",
+      "gross": "Համախառն",
+      "monthly": "Ամսական",
+      "yearly": "Տարեկան"
+    }
   },
   "success": {
     "thankYou": "Շնորհակալություն",
@@ -92,7 +98,8 @@ export default {
     "submitAnother": "Ներկայացրեք ևս մեկ աշխատավարձ",
     "shareTitle": "Տարածեք",
     "shareText": "Ես նպաստեցի Հայաստանի առաջին թափանցիկ IT աշխատավարձերի բազային ստեղծմանը։ Օգնեք — ներկայացրեք անանուն DevCareer.am-ում",
-    "linkCopied": "Հղումը Պատճենվել է։"
+    "linkCopied": "Հղումը Պատճենվել է։",
+    "contributorNumber": "Դուք #{number} մասնակիցն եք։ Կիսվեք կայքով ձեր ընկերների հետ, որպեսզի վիճակագրությունը ավելի արագ հասանելի դառնա։"
   },
   "faq": {
     "badge": "Հարցեր",
@@ -136,7 +143,7 @@ export default {
     "salaryTooHigh": "Արժեքը չափազանց բարձր է թվում",
     "currencyRequired": "Պահանջվում է արժույթ",
     "periodRequired": "Պահանջվում է պարբերաշրջան",
-    "netOrGrossRequired": "Նշեք զուտ կամ համախառն",
+    "netOrGrossRequired": "Նշեք մաքուր կամ համախառն",
     "locationRequired": "Պահանջվում է տեղակայքը",
     "specifyLocation": "Խնդրում եմ նշեք ձեր տեղակայքը",
     "companyRequired": "Ընկերության անվանումը պարտադիր է",

@@ -19,6 +19,7 @@ const INITIAL = {
 };
 
 function Select({ label, id, value, onChange, options, error, required, selectText }) {
+  const normalized = options.map((o) => (typeof o === 'object' && o !== null && 'value' in o && 'label' in o ? o : { value: o, label: o }));
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
@@ -35,8 +36,8 @@ function Select({ label, id, value, onChange, options, error, required, selectTe
         }`}
       >
         <option value="">{selectText}</option>
-        {options.map((o) => (
-          <option key={o} value={o}>{o}</option>
+        {normalized.map((o) => (
+          <option key={o.value} value={o.value}>{o.label}</option>
         ))}
       </select>
       {error && <p id={`${id}-err`} className="mt-1.5 text-xs text-red-500 dark:text-red-400" role="alert">{error}</p>}
@@ -741,8 +742,26 @@ export default function SubmitForm() {
 
                   <div className="grid sm:grid-cols-3 gap-4">
                     <Select label={t('form.currency')} id="currency" value={form.currency} onChange={set('currency')} options={CURRENCIES} error={errors.currency} required selectText={t('form.select')} />
-                    <Select label={t('form.period')} id="period" value={form.period} onChange={set('period')} options={PERIODS} error={errors.period} required selectText={t('form.select')} />
-                    <Select label={t('form.netOrGross')} id="netOrGross" value={form.netOrGross} onChange={set('netOrGross')} options={NET_GROSS} error={errors.netOrGross} required selectText={t('form.select')} />
+                    <Select
+                      label={t('form.period')}
+                      id="period"
+                      value={form.period}
+                      onChange={set('period')}
+                      options={PERIODS.map((p) => ({ value: p, label: t(`form.options.${p.toLowerCase()}`) }))}
+                      error={errors.period}
+                      required
+                      selectText={t('form.select')}
+                    />
+                    <Select
+                      label={t('form.netOrGross')}
+                      id="netOrGross"
+                      value={form.netOrGross}
+                      onChange={set('netOrGross')}
+                      options={NET_GROSS.map((g) => ({ value: g, label: t(`form.options.${g.toLowerCase()}`) }))}
+                      error={errors.netOrGross}
+                      required
+                      selectText={t('form.select')}
+                    />
                   </div>
 
                   <TagSelector tags={getTagsForRole(form.role)} selected={form.techTags} onToggle={toggleTag} />

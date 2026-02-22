@@ -80,7 +80,13 @@ export default {
     "placeholderExp": "e.g. 5",
     "placeholderSalary": "e.g. 500000",
     "selected": "{count} selected",
-    "cooldown": "Please wait {seconds}s."
+    "cooldown": "Please wait {seconds}s.",
+    "options": {
+      "net": "Net",
+      "gross": "Gross",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    }
   },
   "success": {
     "thankYou": "Thank you",
@@ -92,7 +98,8 @@ export default {
     "submitAnother": "Submit another salary",
     "shareTitle": "Share",
     "shareText": "I contributed to building Armenia's first transparent IT salary database. Help — submit anonymously at DevCareer.am",
-    "linkCopied": "Link copied."
+    "linkCopied": "Link copied.",
+    "contributorNumber": "You are participant #{number}. Share the site with your friends so the statistics become available faster."
   },
   "faq": {
     "badge": "Questions",
