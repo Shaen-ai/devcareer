@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { RevealOnScroll } from '../hooks/useInView';
 import { useLanguage } from '../hooks/useLanguage';
 import { generateUUID } from '../utils/uuid';
@@ -292,9 +293,8 @@ function CompanyCombobox({ value, onChange, customValue, onCustomChange, label, 
   );
 }
 
-function SuccessPanel({ token, onReset, submissionNumber }) {
+function SuccessPanel({ onReset, submissionNumber }) {
   const { t } = useLanguage();
-  const [copied, setCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
   useEffect(() => {
@@ -318,12 +318,6 @@ function SuccessPanel({ token, onReset, submissionNumber }) {
       document.execCommand('copy');
       document.body.removeChild(ta);
     }
-  };
-
-  const copyToken = async () => {
-    await clipboardCopy(token);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   const siteUrl = 'https://devcareer.am';
@@ -409,8 +403,8 @@ function SuccessPanel({ token, onReset, submissionNumber }) {
     },
   ];
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+  const overlay = (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:py-8 overflow-y-auto min-h-screen">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={onReset} />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -419,7 +413,7 @@ function SuccessPanel({ token, onReset, submissionNumber }) {
         ))}
       </div>
 
-      <div className="relative w-full max-w-md bg-white dark:bg-brand-900 rounded-3xl shadow-2xl shadow-black/25 overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-md my-auto bg-white dark:bg-brand-900 rounded-3xl shadow-2xl shadow-black/25 overflow-hidden animate-scale-in flex-shrink-0">
         <div className="h-1.5" style={{ background: 'linear-gradient(90deg, #4ade80, #3366ff, #4ade80)', backgroundSize: '300% 100%', animation: 'shimmer 2.5s linear infinite' }} />
 
         <div className="p-6 sm:p-8">
@@ -452,25 +446,6 @@ function SuccessPanel({ token, onReset, submissionNumber }) {
               </div>
             </div>
           )}
-
-          <div className="mt-5 bg-gray-50 dark:bg-brand-950/50 rounded-2xl p-4 sm:p-5 border border-gray-100 dark:border-brand-800/50">
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{t('success.claimToken')}</p>
-            <div className="flex items-center gap-2">
-              <code className="flex-1 text-xs sm:text-sm bg-white dark:bg-brand-900 border border-gray-200 dark:border-brand-700/50 rounded-xl px-3 py-2.5 font-mono break-all text-brand-600 dark:text-brand-300">
-                {token}
-              </code>
-              <button
-                onClick={copyToken}
-                className={`flex-shrink-0 px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                  copied
-                    ? 'bg-green-500 text-white'
-                    : 'bg-brand-500 text-white hover:bg-brand-400 hover:shadow-lg hover:shadow-brand-500/25'
-                }`}
-              >
-                {copied ? t('success.copied') : t('success.copy')}
-              </button>
-            </div>
-          </div>
 
           <div className="mt-6">
             <div className="flex items-center gap-3 mb-3">
@@ -517,6 +492,8 @@ function SuccessPanel({ token, onReset, submissionNumber }) {
       </div>
     </div>
   );
+
+  return createPortal(overlay, document.body);
 }
 
 export default function SubmitForm() {
@@ -635,7 +612,7 @@ export default function SubmitForm() {
     setCooldown(getCooldownRemaining());
     setSubmitting(false);
 
-    setSuccess({ token: claimToken, submissionNumber: result.id || null });
+    setSuccess({ submissionNumber: result.id || null });
   };
 
   const reset = () => {
@@ -670,7 +647,7 @@ export default function SubmitForm() {
         <RevealOnScroll>
           <div className="glass rounded-3xl p-6 sm:p-10">
             {success ? (
-              <SuccessPanel token={success.token} onReset={reset} submissionNumber={success.submissionNumber} />
+              <SuccessPanel onReset={reset} submissionNumber={success.submissionNumber} />
             ) : (
               <form onSubmit={handleSubmit} noValidate>
                 <div aria-hidden="true" className="absolute opacity-0 h-0 overflow-hidden" style={{ position: 'absolute', left: '-9999px' }}>
