@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>DevCareer.am — Real IT Salaries in Armenia (Anonymous)</title>
+  <meta name="description" content="Submit your IT salary anonymously and help build Armenia's first transparent salary database. No names, no emails — just real data for the tech community." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://devcareer.am/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://devcareer.am/" />
+  <meta property="og:title" content="DevCareer.am — Real IT Salaries in Armenia (Anonymous)" />
+  <meta property="og:description" content="Submit your IT salary anonymously. Help build Armenia's first transparent salary database for the tech community." />
+  <meta property="og:site_name" content="DevCareer.am" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DevCareer.am — Real IT Salaries in Armenia" />
+  <meta name="twitter:description" content="Submit your IT salary anonymously. Help build Armenia's first transparent salary database for the tech community." />
+
+  <!-- JSON-LD: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DevCareer",
+    "url": "https://devcareer.am",
+    "description": "Armenia's anonymous IT salary transparency platform."
+  }
+  </script>
+
+  <!-- JSON-LD: WebSite with SearchAction (stubbed) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DevCareer.am",
+    "url": "https://devcareer.am",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://devcareer.am/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Google Font: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: {
+              50:  '#eef4ff',
+              100: '#d9e6ff',
+              200: '#bcd4ff',
+              300: '#8eb8ff',
+              400: '#5990ff',
+              500: '#3366ff',
+              600: '#1a44f5',
+              700: '#1333e1',
+              800: '#162cb6',
+              900: '#182a8f',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Favicon (inline SVG data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>" />
+
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
